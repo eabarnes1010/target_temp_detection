@@ -1,0 +1,22 @@
+#Specific
+archive/
+standby/
+figures/
+data/
+
+# General
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+__pycache__/
+*.ipynb_checkpoints
+*.pyc
+*.pyo
+checkpoints/
+
+#Apple Stuff
+.DS_Store
+.DS_*
+Icon
+
+
+
