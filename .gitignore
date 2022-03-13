@@ -3,6 +3,7 @@ archive/
 standby/
 figures/
 data/
+docs/
 
 # General
 .ipynb_checkpoints/
