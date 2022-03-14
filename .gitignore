@@ -4,6 +4,8 @@ standby/
 figures/
 data/
 docs/
+saved_models/
+saved_files/
 
 # General
 .ipynb_checkpoints/
