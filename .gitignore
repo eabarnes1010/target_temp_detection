@@ -5,7 +5,9 @@ figures/
 data/
 docs/
 saved_models/
-saved_files/
+saved_predictions/
+from_noah/
+model_diagnostics/
 
 # General
 .ipynb_checkpoints/
