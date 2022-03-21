@@ -14,12 +14,12 @@ def get_settings(experiment_name):
         
         "exp0": {
             "save_model": True,
-            "n_models": 3,             # the number of networks to train
+            "n_models": 10,            # the number of networks to train
             "ssp" : "370",             #[options: '126' or '370']
             "gcmsub" : "ALL",          #[options: 'ALL' or 'UNIFORM'
             "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
             "target_temp": 1.5,
-            "n_train_val_test" : (7,3,0),
+            "n_train_val_test" : (7,2,1),
             "baseline_yr_bounds": (1850,1899),
             "training_yr_bounds": (1970,2100),
             "anomaly_yr_bounds": (1951,1980),

@@ -43,14 +43,16 @@ def save_pred_obs(pred_vector, filename):
         pickle.dump(pred_vector, f)
         
 
+def load_tf_model(model_name, directory):
+    # loading a tf model
+    model = tf.keras.models.load_model(directory + model_name + "_model", compile = False)
+    return model
+    
 def save_tf_model(model, model_name, directory, settings):
     
     # save the tf model
     tf.keras.models.save_model(model, directory + model_name + "_model", overwrite=True)
 
-    # example code for loading a tf model
-    # model = tf.keras.models.load_model(directory + model_name + "_model", compile = False)
-    # predictions = model.predict(x_data)
 
     # save the meta data
     with open(directory + model_name + '_metadata.json', 'w') as json_file:

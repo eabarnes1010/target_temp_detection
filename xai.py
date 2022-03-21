@@ -2,10 +2,16 @@
 
 Functions
 ---------
-
+get_gradients(inputs, top_pred_idx=None)
+get_integrated_gradients(inputs, baseline=None, num_steps=50, top_pred_idx=None)
+random_baseline_integrated_gradients(inputs, num_steps=50, num_runs=5, top_pred_idx=None)
 
 """
-def get_gradients(inputs, top_pred_idx=None):
+
+import tensorflow as tf
+import numpy as np
+
+def get_gradients(model,inputs, top_pred_idx=None):
     """Computes the gradients of outputs w.r.t input image.
 
     Args:
@@ -35,7 +41,7 @@ def get_gradients(inputs, top_pred_idx=None):
     grads = tape.gradient(preds, inputs)
     return grads
 
-def get_integrated_gradients(inputs, baseline=None, num_steps=50, top_pred_idx=None):
+def get_integrated_gradients(model, inputs, baseline=None, num_steps=50, top_pred_idx=None):
     """Computes Integrated Gradients for a prediction.
 
     Args:
@@ -71,7 +77,7 @@ def get_integrated_gradients(inputs, baseline=None, num_steps=50, top_pred_idx=N
     # 3. Get the gradients
     grads = []
     for i, x_data in enumerate(interpolated_inputs):
-        grad = get_gradients(x_data, top_pred_idx=top_pred_idx)
+        grad = get_gradients(model,x_data, top_pred_idx=top_pred_idx)
         grads.append(grad[0])
     grads = tf.convert_to_tensor(grads, dtype=tf.float32)
 
@@ -83,7 +89,7 @@ def get_integrated_gradients(inputs, baseline=None, num_steps=50, top_pred_idx=N
     integrated_grads = (inputs - baseline) * avg_grads
     return integrated_grads
 
-def random_baseline_integrated_gradients(inputs, num_steps=50, num_runs=5, top_pred_idx=None):
+def random_baseline_integrated_gradients(model,inputs, num_steps=50, num_runs=5, top_pred_idx=None):
     """Generates a number of random baseline images.
 
     Args:

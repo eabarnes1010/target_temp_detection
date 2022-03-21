@@ -48,18 +48,20 @@ def get_observations(directory, settings):
 
     print('np.shape(x_obs) = ' + str(np.shape(x_obs)))
     
-    return x_obs, global_mean_obs
+    return da_obs, x_obs, global_mean_obs
     
-def get_cmip_data(directory, rng, settings):
+def get_cmip_data(directory, settings):
     data_train, data_val, data_test = None, None, None
     labels_train, labels_val, labels_test = None, None, None
     years_train, years_val, years_test = None, None, None
     target_years = []
     
     N_TRAIN, N_VAL, N_TEST, ALL_MEMBERS = get_members(settings)
-    train_members = rng.choice(ALL_MEMBERS, size=N_TRAIN, replace=False)
-    val_members   = rng.choice(np.setdiff1d(ALL_MEMBERS,train_members), size=N_VAL, replace=False)
-    test_members  = rng.choice(np.setdiff1d(ALL_MEMBERS,np.append(train_members[:],val_members)), size=N_TEST, replace=False)
+    
+    rng_cmip = np.random.default_rng(settings["seed"])
+    train_members = rng_cmip.choice(ALL_MEMBERS, size=N_TRAIN, replace=False)
+    val_members   = rng_cmip.choice(np.setdiff1d(ALL_MEMBERS,train_members), size=N_VAL, replace=False)
+    test_members  = rng_cmip.choice(np.setdiff1d(ALL_MEMBERS,np.append(train_members[:],val_members)), size=N_TEST, replace=False)
     print(train_members, val_members, test_members)
     
     # save the meta data
