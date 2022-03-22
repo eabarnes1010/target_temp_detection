@@ -35,10 +35,7 @@ def get_observations(directory, settings):
         raise NotImplementedError('no such obs data')
 
     da_obs = file_methods.get_netcdf_da(directory + nc_filename_obs)
-    weights = np.cos(np.deg2rad(da_obs.lat))
-    weights.name = "weights"
-    temp_weighted = da_obs.weighted(weights)
-    global_mean_obs = temp_weighted.mean(("lon", "lat"), skipna=False)
+    global_mean_obs = compute_global_mean(da_obs)
 
     data_obs = preprocess_data(da_obs, MEMBERS=None, settings=settings) 
     x_obs = data_obs.values.reshape((data_obs.shape[0],data_obs.shape[1]*data_obs.shape[2]))
@@ -48,8 +45,16 @@ def get_observations(directory, settings):
 
     print('np.shape(x_obs) = ' + str(np.shape(x_obs)))
     
-    return da_obs, x_obs, global_mean_obs
+    return data_obs, x_obs, global_mean_obs
+
+def compute_global_mean(da):
+    weights = np.cos(np.deg2rad(da.lat))
+    weights.name = "weights"
+    temp_weighted = da.weighted(weights)
+    global_mean = temp_weighted.mean(("lon", "lat"), skipna=False)
     
+    return global_mean
+
 def get_cmip_data(directory, settings):
     data_train, data_val, data_test = None, None, None
     labels_train, labels_val, labels_test = None, None, None

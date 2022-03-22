@@ -8,6 +8,7 @@ saved_models/
 saved_predictions/
 from_noah/
 model_diagnostics/
+zip_files/
 
 # General
 .ipynb_checkpoints/

@@ -103,7 +103,7 @@ def drawOnGlobe(ax, map_proj, data, lats, lons, cmap='coolwarm', vmin=None, vmax
         ax.contour(lons_cyc,lats,contourMap_cyc,contourVals, transform=data_crs, colors='fuchsia')
     
     if(cbarBool):
-        cb = plt.colorbar(image, shrink=.5, orientation="horizontal", pad=.02, extend=extent)
+        cb = plt.colorbar(image, shrink=.45, orientation="horizontal", pad=.02, extend=extent)
         cb.ax.tick_params(labelsize=6) 
     else:
         cb = None
