@@ -14,6 +14,7 @@ import cartopy as ct
 import numpy.ma as ma
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+import custom_metrics
 
 mpl.rcParams["figure.facecolor"] = "white"
 mpl.rcParams["figure.dpi"] = 150
@@ -87,7 +88,8 @@ def drawOnGlobe(ax, map_proj, data, lats, lons, cmap='coolwarm', vmin=None, vmax
         name='land',
         scale='50m',
         facecolor='None',
-        edgecolor = 'k'
+        edgecolor = 'k',
+        linewidth=.5,
     )
     ax.add_feature(land_feature)
 #     ax.GeoAxes.patch.set_facecolor('black')
@@ -141,3 +143,45 @@ def add_cyclic_point(data, coord=None, axis=-1):
     else:
         return_value = new_data, new_coord
     return return_value    
+
+def plot_pits(ax, x_val, onehot_val, model_shash):
+    plt.sca(ax)  
+    clr_shash = 'tab:purple'
+    
+    # shash pit
+    bins, hist_shash, D_shash, EDp_shash = custom_metrics.compute_pit(onehot_val, x_data=x_val,model_shash=model_shash)
+    bins_inc = bins[1]-bins[0]
+
+    bin_add = bins_inc/2
+    bin_width = bins_inc*.98
+    ax.bar(hist_shash[1][:-1] + bin_add,
+             hist_shash[0],
+             width=bin_width,
+             color=clr_shash,
+             label='SHASH',
+            )
+    
+    # make the figure pretty
+    ax.axhline(y=.1, 
+                linestyle='--',
+                color='dimgray', 
+                linewidth=2.,
+               )
+    ax.set_ylim(0,.2)
+    ax.set_xticks(bins,np.around(bins,1))
+    
+    # ax = plt.gca()
+    yticks = np.around(np.arange(0,.25,.05),2)
+    plt.yticks(yticks,yticks)
+    
+    plt.text(0.,np.max(yticks)*.99,
+             'SHASH D: ' + str(np.round(D_shash,4)) + ' (' + str(np.round(EDp_shash,3)) +  ')', 
+             color=clr_shash,     
+             verticalalignment='top',
+             fontsize=12)
+
+
+    ax.set_xlabel('probability integral transform')
+    ax.set_ylabel('probability')
+    # plt.legend(loc=1)
+    # plt.title('PIT histogram comparison', fontsize=FS, color='k')

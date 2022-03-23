@@ -55,7 +55,7 @@ def compute_global_mean(da):
     
     return global_mean
 
-def get_cmip_data(directory, settings):
+def get_cmip_data(directory, settings, verbose=1):
     data_train, data_val, data_test = None, None, None
     labels_train, labels_val, labels_test = None, None, None
     years_train, years_val, years_test = None, None, None
@@ -67,7 +67,8 @@ def get_cmip_data(directory, settings):
     train_members = rng_cmip.choice(ALL_MEMBERS, size=N_TRAIN, replace=False)
     val_members   = rng_cmip.choice(np.setdiff1d(ALL_MEMBERS,train_members), size=N_VAL, replace=False)
     test_members  = rng_cmip.choice(np.setdiff1d(ALL_MEMBERS,np.append(train_members[:],val_members)), size=N_TEST, replace=False)
-    print(train_members, val_members, test_members)
+    if verbose == 1:
+        print(train_members, val_members, test_members)
     
     # save the meta data
     settings['train_members'] = train_members.tolist()
@@ -77,9 +78,10 @@ def get_cmip_data(directory, settings):
     # loop through and get the data
     filenames = file_methods.get_cmip_filenames(settings, verbose=0)
     for f in filenames:
-        print(f)
+        if verbose == 1:
+            print(f)
         da = file_methods.get_netcdf_da(directory + f)
-        f_labels, f_years, f_target_year = get_labels(da, settings,)
+        f_labels, f_years, f_target_year = get_labels(da, settings,verbose=verbose)
 
         # create sets of train / validaton / test
         target_years = np.append(target_years,f_target_year)
@@ -111,11 +113,12 @@ def get_cmip_data(directory, settings):
                                                                 settings,
                                                                )
 
-    print('---------------------------')        
     YEARS_UNIQUE = np.unique(years_train)
-    print('data_train.shape = ' + str(np.shape(data_train)))
-    print('data_val.shape = ' + str(np.shape(data_val)))
-    print('data_test.shape = ' + str(np.shape(data_test)))
+    if verbose == 1:
+        print('---------------------------')                
+        print('data_train.shape = ' + str(np.shape(data_train)))
+        print('data_val.shape = ' + str(np.shape(data_val)))
+        print('data_test.shape = ' + str(np.shape(data_test)))
     
     x_train = data_train.reshape((data_train.shape[0]*data_train.shape[1],data_train.shape[2]*data_train.shape[3]))
     x_val   = data_val.reshape((data_val.shape[0]*data_val.shape[1],data_val.shape[2]*data_val.shape[3]))
@@ -128,10 +131,10 @@ def get_cmip_data(directory, settings):
     y_yrs_train = years_train.reshape((data_train.shape[0]*data_train.shape[1],))
     y_yrs_val   = years_val.reshape((data_val.shape[0]*data_val.shape[1],))
     y_yrs_test  = years_test.reshape((data_test.shape[0]*data_test.shape[1],))
-
-    print(x_train.shape, y_train.shape, y_yrs_train.shape)
-    print(x_val.shape, y_val.shape, y_yrs_val.shape)
-    print(x_test.shape, y_test.shape, y_yrs_test.shape)  
+    if verbose == 1:
+        print(x_train.shape, y_train.shape, y_yrs_train.shape)
+        print(x_val.shape, y_val.shape, y_yrs_val.shape)
+        print(x_test.shape, y_test.shape, y_yrs_test.shape)  
     
     # make onehot vectors for training
     if settings["network_type"] == 'shash2':
@@ -151,7 +154,7 @@ def get_cmip_data(directory, settings):
     return x_train, x_val, x_test, y_train, y_val, y_test, onehot_train, onehot_val, onehot_test, y_yrs_train, y_yrs_val, y_yrs_test, target_years, map_shape, settings
 
 
-def get_labels(da, settings, plot=False):
+def get_labels(da, settings, plot=False, verbose=1):
     # compute the ensemble mean, global mean temperature
     # these computations should be based on the training set only
     da_ens = da.mean(axis=0)
@@ -185,7 +188,8 @@ def get_labels(da, settings, plot=False):
         plt.show()
     
     # define the labels
-    print('TARGET_YEAR = ' + str(target_year.year))
+    if verbose == 1:
+        print('TARGET_YEAR = ' + str(target_year.year))
     labels = target_year.year - da['time.year'].values
     
     return labels, da['time.year'].values, target_year.year

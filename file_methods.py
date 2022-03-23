@@ -13,6 +13,7 @@ import xarray as xr
 import json
 import pickle
 import tensorflow as tf
+import custom_metrics
 
 __author__ = "Elizabeth A. Barnes and Noah Diffenbaugh"
 __version__ = "20 March 2022"
@@ -45,7 +46,13 @@ def save_pred_obs(pred_vector, filename):
 
 def load_tf_model(model_name, directory):
     # loading a tf model
-    model = tf.keras.models.load_model(directory + model_name + "_model", compile = False)
+    model = tf.keras.models.load_model(directory + model_name + "_model", 
+                                       compile = False,
+                                       custom_objects={"InterquartileCapture": custom_metrics.InterquartileCapture(),
+                                                       "SignTest": custom_metrics.SignTest(),
+                                                       "CustomMAE": custom_metrics.CustomMAE()
+                                                      },
+                                      )
     return model
     
 def save_tf_model(model, model_name, directory, settings):
