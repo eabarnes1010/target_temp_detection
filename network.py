@@ -123,6 +123,9 @@ def compile_model(x_train, y_train, settings):
         
         output_layer = tf.keras.layers.concatenate([mu_unit, sigma_unit], axis=1)
         
+    elif settings['network_type'] == 'shash3':
+        print('here')
+        
     else:
         raise NotImpletementedError('no such network_type')
         
