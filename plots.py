@@ -19,6 +19,12 @@ import custom_metrics
 mpl.rcParams["figure.facecolor"] = "white"
 mpl.rcParams["figure.dpi"] = 150
 
+def savefig(filename,dpi=300):
+    for fig_format in (".png",".pdf"):
+        plt.savefig(filename + fig_format, 
+                    bbox_inches="tight",
+                    dpi=dpi)
+    
 
 def plot_metrics(history,metric):
     
@@ -146,7 +152,7 @@ def add_cyclic_point(data, coord=None, axis=-1):
 
 def plot_pits(ax, x_val, onehot_val, model_shash):
     plt.sca(ax)  
-    clr_shash = 'tab:purple'
+    clr_shash = 'tab:blue'
     
     # shash pit
     bins, hist_shash, D_shash, EDp_shash = custom_metrics.compute_pit(onehot_val, x_data=x_val,model_shash=model_shash)
@@ -164,17 +170,16 @@ def plot_pits(ax, x_val, onehot_val, model_shash):
     # make the figure pretty
     ax.axhline(y=.1, 
                 linestyle='--',
-                color='dimgray', 
+                color='k', 
                 linewidth=2.,
-               )
-    ax.set_ylim(0,.2)
+               )    
+    # ax = plt.gca()
+    yticks = np.around(np.arange(0,.55,.05),2)
+    plt.yticks(yticks,yticks)
+    ax.set_ylim(0,.25)
     ax.set_xticks(bins,np.around(bins,1))
     
-    # ax = plt.gca()
-    yticks = np.around(np.arange(0,.25,.05),2)
-    plt.yticks(yticks,yticks)
-    
-    plt.text(0.,np.max(yticks)*.99,
+    plt.text(0.,np.max(ax.get_ylim())*.99,
              'SHASH D: ' + str(np.round(D_shash,4)) + ' (' + str(np.round(EDp_shash,3)) +  ')', 
              color=clr_shash,     
              verticalalignment='top',
