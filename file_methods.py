@@ -74,17 +74,17 @@ def get_cmip_filenames(settings, verbose=0):
                      'tas_Amon_historical_ssp370_GISS-E2-1-G_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp370_IPSL-CM6A-LR_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp370_CESM2-LE2-smbb_r1-10_ncecat_ann_mean_2pt5degree.nc',
-                    )
-    elif settings["ssp"] == '370' and settings["gcmsub"] == 'UNIFORM' and settings["target_temp"] == 2.0:
-        filenames = ('tas_Amon_historical_ssp370_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
-                     'tas_Amon_historical_ssp370_ACCESS-ESM1-5_r1-10_ncecat_ann_mean_2pt5degree.nc',
-                     'tas_Amon_historical_ssp370_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
-                    )
+                    )    
+    # elif settings["ssp"] == '370' and settings["gcmsub"] == 'UNIFORM' and settings["target_temp"] == 2.0:
+    #     filenames = ('tas_Amon_historical_ssp370_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
+    #                  'tas_Amon_historical_ssp370_ACCESS-ESM1-5_r1-10_ncecat_ann_mean_2pt5degree.nc',
+    #                  'tas_Amon_historical_ssp370_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
+    #                 )
     elif settings["ssp"] == '370' and settings["gcmsub"] == 'UNIFORM':
         filenames = ('tas_Amon_historical_ssp370_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp370_ACCESS-ESM1-5_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp370_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
-                     'tas_Amon_historical_ssp370_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     # 'tas_Amon_historical_ssp370_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',
                     )
     elif ((settings["ssp"] == '126' and settings["gcmsub"] == 'ALL') and (settings["target_temp"] == 2.0)):
         filenames = ('tas_Amon_historical_ssp126_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
@@ -97,12 +97,36 @@ def get_cmip_filenames(settings, verbose=0):
                      'tas_Amon_historical_ssp126_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp126_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',
                     )
-    elif settings["ssp"] == '126' and settings["gcmsub"] == 'UNIFORM':
+    elif settings["ssp"] == '126' and settings["gcmsub"] == 'FORCE':
         filenames = ('tas_Amon_historical_ssp126_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp126_ACCESS-ESM1-5_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp126_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
                      'tas_Amon_historical_ssp126_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                    )        
+    elif settings["ssp"] == '126' and settings["gcmsub"] == 'EXTEND':
+        filenames = ('tas_Amon_historical_ssp126_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp126_ACCESS-ESM1-5_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp126_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp126_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                    )        
+        
+    elif settings["ssp"] == '126' and settings["gcmsub"] == 'UNIFORM':
+        filenames = ('tas_Amon_historical_ssp126_CanESM5_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp126_ACCESS-ESM1-5_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp126_UKESM1-0-LL_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     # 'tas_Amon_historical_ssp126_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',
                     )
+    elif settings["ssp"] == '126' and settings["gcmsub"] == 'MIROC':
+        filenames = (
+                     'tas_Amon_historical_ssp126_MIROC6_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp126_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',            
+                    )
+    elif settings["ssp"] == '370' and settings["gcmsub"] == 'MIROC':
+        filenames = (
+                     # 'tas_Amon_historical_ssp370_MIROC6_r1-10_ncecat_ann_mean_2pt5degree.nc',
+                     'tas_Amon_historical_ssp370_MIROC-ES2L_r1-10_ncecat_ann_mean_2pt5degree.nc',            
+                    )
+        
     else:
         raise NotImplementedError('no such SSP')
 
