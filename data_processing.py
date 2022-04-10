@@ -167,17 +167,25 @@ def get_labels(da, settings, plot=False, verbose=1):
     global_mean_ens = global_mean_ens.mean(("lon","lat"))
     
     # compute the target year 
-    try:
-        baseline_mean = global_mean.sel(time=slice(str(settings["baseline_yr_bounds"][0]),str(settings["baseline_yr_bounds"][1]))).mean('time')
-        iwarmer = np.where(global_mean.values > baseline_mean.values+settings["target_temp"])[0]
-        target_year = global_mean["time"].values[iwarmer[0]].year
-    except:
-        if settings["gcmsub"] == 'FORCE' or settings["gcmsub"] == 'MIROC':
-            target_year = global_mean["time"].values[-1].year
-        elif settings["gcmsub"] == 'EXTEND' or settings["gcmsub"] == 'MIROC':    
-            target_year = 2150
-        else:
-            raise ValueError('****no such target****')
+    if settings["gcmsub"] == 'MAX':
+        
+        baseline_mean = global_mean.sel(time=slice(str(settings["baseline_yr_bounds"][0]),str(settings["baseline_yr_bounds"][1]))).mean('time')       
+        imax = np.argmax(global_mean.values)
+        target_year = global_mean["time"].values[imax].year
+        temp_reached = np.round(global_mean.values[imax]-baseline_mean.values,2)
+    else: 
+        temp_reached = settings["target_temp"]
+        try:
+            baseline_mean = global_mean.sel(time=slice(str(settings["baseline_yr_bounds"][0]),str(settings["baseline_yr_bounds"][1]))).mean('time')
+            iwarmer = np.where(global_mean.values > baseline_mean.values+settings["target_temp"])[0]
+            target_year = global_mean["time"].values[iwarmer[0]].year
+        except:
+            if settings["gcmsub"] == 'FORCE' or settings["gcmsub"] == 'MIROC':
+                target_year = global_mean["time"].values[-1].year
+            elif settings["gcmsub"] == 'EXTEND' or settings["gcmsub"] == 'MIROC':    
+                target_year = 2150
+            else:
+                raise ValueError('****no such target****')
 
     # plot the calculation to make sure things make sense
     if plot == True:
@@ -197,7 +205,7 @@ def get_labels(da, settings, plot=False, verbose=1):
     
     # define the labels
     if verbose == 1:
-        print('TARGET_YEAR = ' + str(target_year))
+        print('TARGET_YEAR = ' + str(target_year) + ', TARGET_TEMP = ' + str(temp_reached))
     labels = target_year - da['time.year'].values
     
     return labels, da['time.year'].values, target_year
