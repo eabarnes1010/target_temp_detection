@@ -12,6 +12,7 @@ make_data_split(da, data, f_labels, f_years, labels, years, MEMBERS, settings)
 import numpy as np
 import pandas as pd
 import file_methods
+from scipy.signal import savgol_filter
 
 
 __author__ = "Elizabeth A. Barnes and Noah Diffenbaugh"
@@ -29,8 +30,14 @@ def get_members(settings):
 def get_observations(directory, settings):
     if settings["obsdata"] == "BEST":
         nc_filename_obs = 'Land_and_Ocean_LatLong1_185001_202112_ann_mean_2pt5degree.nc'
+    elif settings["obsdata"] == "BESTANOM":
+        nc_filename_obs = 'Land_and_Ocean_LatLong1_185001_202112_anomalies_ann_mean_2pt5degree.nc'
     elif settings["obsdata"] == 'GISS': 
         nc_filename_obs = 'gistemp1200_GHCNv4_ERSSTv5_188001_202112_ann_mean_2pt5degree.nc'
+    elif settings["obsdata"] == "NCEP":
+        nc_filename_obs = 'NCEP_R1_air_surface_mon_mean_194801_202112_ann_mean_2pt5degree.nc' 
+    elif settings["obsdata"] == 'ERA5':
+        nc_filename_obs = 'ERA5_t2m_mon_197901-202200.nc_195001_202112_ann_mean_2pt5degree.nc'
     else:
         raise NotImplementedError('no such obs data')
 
@@ -177,12 +184,16 @@ def get_labels(da, settings, plot=False, verbose=1):
         temp_reached = settings["target_temp"]
         try:
             baseline_mean = global_mean.sel(time=slice(str(settings["baseline_yr_bounds"][0]),str(settings["baseline_yr_bounds"][1]))).mean('time')
-            iwarmer = np.where(global_mean.values > baseline_mean.values+settings["target_temp"])[0]
+            if settings["smooth"] == False:
+                iwarmer = np.where(global_mean.values > baseline_mean.values+settings["target_temp"])[0]
+            else:
+                smoothed_values = savgol_filter(global_mean.values, 15, 3)
+                iwarmer = np.where(smoothed_values > baseline_mean.values+settings["target_temp"])[0]
             target_year = global_mean["time"].values[iwarmer[0]].year
         except:
-            if settings["gcmsub"] == 'FORCE' or settings["gcmsub"] == 'MIROC':
+            if settings["gcmsub"] == 'FORCE' or settings["gcmsub"] == 'OOS':
                 target_year = global_mean["time"].values[-1].year
-            elif settings["gcmsub"] == 'EXTEND' or settings["gcmsub"] == 'MIROC':    
+            elif settings["gcmsub"] == 'EXTEND':    
                 target_year = 2150
             else:
                 raise ValueError('****no such target****')
@@ -219,6 +230,9 @@ def preprocess_data(da, MEMBERS, settings):
 
     if settings["anomalies"] is True:
         new_data = new_data - new_data.sel(time=slice(str(settings["anomaly_yr_bounds"][0]),str(settings["anomaly_yr_bounds"][1]))).mean('time')
+    if settings["anomalies"] == 'Baseline':
+        new_data = new_data - new_data.sel(time=slice(str(settings["baseline_yr_bounds"][0]),str(settings["baseline_yr_bounds"][1]))).mean('time')
+        new_data = new_data - new_data.sel(time=slice(str(settings["anomaly_yr_bounds"][0]),str(settings["anomaly_yr_bounds"][1]))).mean('time')
         
     if settings["remove_map_mean"]  == 'raw':
         new_data = new_data - new_data.mean(("lon","lat"))
@@ -227,7 +241,15 @@ def preprocess_data(da, MEMBERS, settings):
         weights.name = "weights"
         new_data_weighted = new_data.weighted(weights)
         new_data = new_data - new_data_weighted.mean(("lon","lat"))
-
+    
+    if settings["remove_sh"] == True:
+        # print('removing SH')
+        i = np.where(new_data["lat"]<=-50)[0]
+        if(len(new_data.shape)==3):
+            new_data[:,i,:] = 0.0
+        else:
+            new_data[:,:,i,:] = 0.0
+        
     return new_data
 
 def make_data_split(da, data, f_labels, f_years, labels, years, MEMBERS, settings):
