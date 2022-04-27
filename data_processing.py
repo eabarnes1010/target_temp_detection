@@ -180,6 +180,7 @@ def get_labels(da, settings, plot=False, verbose=1):
         imax = np.argmax(global_mean.values)
         target_year = global_mean["time"].values[imax].year
         temp_reached = np.round(global_mean.values[imax]-baseline_mean.values,2)
+        
     else: 
         temp_reached = settings["target_temp"]
         try:
@@ -216,8 +217,8 @@ def get_labels(da, settings, plot=False, verbose=1):
     
     # define the labels
     if verbose == 1:
-        print('TARGET_YEAR = ' + str(target_year) + ', TARGET_TEMP = ' + str(temp_reached))
-    labels = target_year - da['time.year'].values
+        print('TARGET_YEAR = ' + str(target_year) + ', TARGET_TEMP = ' + str(temp_reached))        
+    labels = target_year - da['time.year'].values        
     
     return labels, da['time.year'].values, target_year
 
