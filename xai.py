@@ -78,7 +78,8 @@ def get_integrated_gradients(model, inputs, baseline=None, num_steps=50, top_pre
     grads = []
     for i, x_data in enumerate(interpolated_inputs):
         grad = get_gradients(model,x_data, top_pred_idx=top_pred_idx)
-        grads.append(grad[0])
+        # grads.append(grad[0]) WRONG
+        grads.append(grad)
     grads = tf.convert_to_tensor(grads, dtype=tf.float32)
 
     # 4. Approximate the integral using the trapezoidal rule
