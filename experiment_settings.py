@@ -268,7 +268,181 @@ def get_settings(experiment_name):
         },           
         
         #---------------------- REVIEWER COMMENTS ---------------------------
-        
+       
+        "exp15C_126_smooth_nohigh10": { 
+            "save_model": True,
+            "n_models": 3,            # the number of networks to train
+            "ssp" : "126",             #[options: '126' or '370']
+            "gcmsub" : "noHIGH10",          #[options: 'ALL' or 'UNIFORM'
+            "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
+            "smooth": True,                        
+            "target_temp": 1.5,
+            "n_train_val_test" : (3,1,1),
+            "baseline_yr_bounds": (1850,1899),
+            "training_yr_bounds": (1970,2100),
+            "anomaly_yr_bounds": (1951,1980),
+            "remove_sh": False,            
+            "anomalies": True,         #[options: True or False]
+            "remove_map_mean": False,  #[options: False or "weighted" or "raw"]
+
+            "network_type": 'shash2',  #[options: "reg" or "shash2"]
+            "hiddens": [25,25],
+            "dropout_rate": 0.,
+            "ridge_param": [10.0,0.0], 
+            "learning_rate": 0.00001,  # reg->0.0001, shash2->.00005 or .00001
+            "batch_size": 64,
+            "rng_seed": 8889,
+            "seed": None,
+            "act_fun": ["relu","relu"],
+            "n_epochs": 25_000,
+            "patience": 50,
+        }, 
+       "exp15C_126_smooth_nohigh7": { 
+            "save_model": True,
+            "n_models": 3,            # the number of networks to train
+            "ssp" : "126",             #[options: '126' or '370']
+            "gcmsub" : "noHIGH7",          #[options: 'ALL' or 'UNIFORM'
+            "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
+            "smooth": True,                        
+            "target_temp": 1.5,
+            "n_train_val_test" : (3,1,1),
+            "baseline_yr_bounds": (1850,1899),
+            "training_yr_bounds": (1970,2100),
+            "anomaly_yr_bounds": (1951,1980),
+            "remove_sh": False,            
+            "anomalies": True,         #[options: True or False]
+            "remove_map_mean": False,  #[options: False or "weighted" or "raw"]
+
+            "network_type": 'shash2',  #[options: "reg" or "shash2"]
+            "hiddens": [25,25],
+            "dropout_rate": 0.,
+            "ridge_param": [10.0,0.0], 
+            "learning_rate": 0.00001,  # reg->0.0001, shash2->.00005 or .00001
+            "batch_size": 64,
+            "rng_seed": 8889,
+            "seed": None,
+            "act_fun": ["relu","relu"],
+            "n_epochs": 25_000,
+            "patience": 50,
+        }, 
+         
+        "exp15C_126_smooth_nohigh5": { 
+            "save_model": True,
+            "n_models": 3,            # the number of networks to train
+            "ssp" : "126",             #[options: '126' or '370']
+            "gcmsub" : "noHIGH5",          #[options: 'ALL' or 'UNIFORM'
+            "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
+            "smooth": True,                        
+            "target_temp": 1.5,
+            "n_train_val_test" : (3,1,1),
+            "baseline_yr_bounds": (1850,1899),
+            "training_yr_bounds": (1970,2100),
+            "anomaly_yr_bounds": (1951,1980),
+            "remove_sh": False,            
+            "anomalies": True,         #[options: True or False]
+            "remove_map_mean": False,  #[options: False or "weighted" or "raw"]
+
+            "network_type": 'shash2',  #[options: "reg" or "shash2"]
+            "hiddens": [25,25],
+            "dropout_rate": 0.,
+            "ridge_param": [10.0,0.0], 
+            "learning_rate": 0.00001,  # reg->0.0001, shash2->.00005 or .00001
+            "batch_size": 64,
+            "rng_seed": 8889,
+            "seed": None,
+            "act_fun": ["relu","relu"],
+            "n_epochs": 25_000,
+            "patience": 50,
+        },         
+
+        "exp15C_126_nohigh10": { 
+            "save_model": True,
+            "n_models": 3,            # the number of networks to train
+            "ssp" : "126",             #[options: '126' or '370']
+            "gcmsub" : "noHIGH10",          #[options: 'ALL' or 'UNIFORM'
+            "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
+            "smooth": False,                        
+            "target_temp": 1.5,
+            "n_train_val_test" : (3,1,1),
+            "baseline_yr_bounds": (1850,1899),
+            "training_yr_bounds": (1970,2100),
+            "anomaly_yr_bounds": (1951,1980),
+            "remove_sh": False,            
+            "anomalies": True,         #[options: True or False]
+            "remove_map_mean": False,  #[options: False or "weighted" or "raw"]
+
+            "network_type": 'shash2',  #[options: "reg" or "shash2"]
+            "hiddens": [25,25],
+            "dropout_rate": 0.,
+            "ridge_param": [10.0,0.0], 
+            "learning_rate": 0.00001,  # reg->0.0001, shash2->.00005 or .00001
+            "batch_size": 64,
+            "rng_seed": 8889,
+            "seed": None,
+            "act_fun": ["relu","relu"],
+            "n_epochs": 25_000,
+            "patience": 50,
+        },         
+                 
+
+        "exp15C_126_nohigh7": { 
+            "save_model": True,
+            "n_models": 4,            # the number of networks to train
+            "ssp" : "126",             #[options: '126' or '370']
+            "gcmsub" : "noHIGH7",          #[options: 'ALL' or 'UNIFORM'
+            "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
+            "smooth": False,                        
+            "target_temp": 1.5,
+            "n_train_val_test" : (3,1,1),
+            "baseline_yr_bounds": (1850,1899),
+            "training_yr_bounds": (1970,2100),
+            "anomaly_yr_bounds": (1951,1980),
+            "remove_sh": False,            
+            "anomalies": True,         #[options: True or False]
+            "remove_map_mean": False,  #[options: False or "weighted" or "raw"]
+
+            "network_type": 'shash2',  #[options: "reg" or "shash2"]
+            "hiddens": [25,25],
+            "dropout_rate": 0.,
+            "ridge_param": [10.0,0.0], 
+            "learning_rate": 0.00001,  # reg->0.0001, shash2->.00005 or .00001
+            "batch_size": 64,
+            "rng_seed": 8889,
+            "seed": None,
+            "act_fun": ["relu","relu"],
+            "n_epochs": 25_000,
+            "patience": 50,
+        }, 
+
+        "exp15C_126_nohigh5": { 
+            "save_model": True,
+            "n_models": 3,            # the number of networks to train
+            "ssp" : "126",             #[options: '126' or '370']
+            "gcmsub" : "noHIGH5",          #[options: 'ALL' or 'UNIFORM'
+            "obsdata" : "BEST",        #[options: 'BEST' or 'GISTEMP'
+            "smooth": False,                        
+            "target_temp": 1.5,
+            "n_train_val_test" : (3,1,1),
+            "baseline_yr_bounds": (1850,1899),
+            "training_yr_bounds": (1970,2100),
+            "anomaly_yr_bounds": (1951,1980),
+            "remove_sh": False,            
+            "anomalies": True,         #[options: True or False]
+            "remove_map_mean": False,  #[options: False or "weighted" or "raw"]
+
+            "network_type": 'shash2',  #[options: "reg" or "shash2"]
+            "hiddens": [25,25],
+            "dropout_rate": 0.,
+            "ridge_param": [10.0,0.0], 
+            "learning_rate": 0.00001,  # reg->0.0001, shash2->.00005 or .00001
+            "batch_size": 64,
+            "rng_seed": 8889,
+            "seed": None,
+            "act_fun": ["relu","relu"],
+            "n_epochs": 25_000,
+            "patience": 50,
+        },        
+
         "exp13C_126": { 
             "save_model": True,
             "n_models": 10,            # the number of networks to train
