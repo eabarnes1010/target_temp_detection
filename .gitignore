@@ -24,5 +24,8 @@ checkpoints/
 .DS_*
 Icon
 
+PyCharm
+.idea/
+
 
 
